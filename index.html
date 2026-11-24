@@ -1,3 +1,399 @@
-<h1>Meu primeiro site</h1>
-<p>Esse será meu site</p>
-<p>vou contribuir meu site aqui</p>
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grand Theft Auto VI | Bem-vindo a Leonida</title>
+    
+    <!-- Google Fonts: Montserrat, Oswald, Pacifico (para o toque neon Vice City) e Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Montserrat:ital,wght@0,700;0,900;1,900&family=Oswald:wght@500;700&family=Pacifico&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome para ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Configuração customizada do Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Montserrat', 'sans-serif'],
+                        condensed: ['Oswald', 'sans-serif'],
+                        script: ['Pacifico', 'cursive'],
+                    },
+                    colors: {
+                        vice: {
+                            dark: '#090412',
+                            purple: '#1c0a38',
+                            pink: '#ff2a85',
+                            cyan: '#00f0ff',
+                            orange: '#ff7b00',
+                            gold: '#ffd000',
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'glow': 'glow 2.5s ease-in-out infinite alternate',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-12px)' },
+                        },
+                        glow: {
+                            'from': { textShadow: '0 0 10px #ff2a85, 0 0 20px #ff2a85, 0 0 30px #ff7b00' },
+                            'to': { textShadow: '0 0 20px #00f0ff, 0 0 35px #00f0ff, 0 0 45px #ff2a85' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Estilos customizados para efeitos neon e texturas */
+        body {
+            background-color: #090412;
+            color: #f8fafc;
+            overflow-x: hidden;
+        }
+
+        /* Efeito de brilho de cursor dinâmico */
+        #cursor-glow {
+            background: radial-gradient(600px circle at var(--x, 50%) var(--y, 50%), rgba(255, 42, 133, 0.14), rgba(0, 240, 255, 0.06) 40%, transparent 80%);
+        }
+
+        /* Gradiente de texto estilo pôr do sol de Vice City */
+        .vice-gradient-text {
+            background: linear-gradient(135deg, #ffd000 0%, #ff7b00 30%, #ff2a85 70%, #b5179e 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Gradiente do "VI" icônico */
+        .vi-logo-gradient {
+            background: linear-gradient(180deg, #ff9e00 0%, #ff2a85 55%, #7209b7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 15px rgba(255, 42, 133, 0.5));
+        }
+
+        /* Bordas neon brilhantes */
+        .neon-border-pink {
+            box-shadow: 0 0 15px rgba(255, 42, 133, 0.3), inset 0 0 15px rgba(255, 42, 133, 0.1);
+            border: 1px solid rgba(255, 42, 133, 0.5);
+        }
+
+        .neon-border-cyan {
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.3), inset 0 0 15px rgba(0, 240, 255, 0.1);
+            border: 1px solid rgba(0, 240, 255, 0.5);
+        }
+
+        /* Grade estilo Synthwave/Outrun no horizonte */
+        .vice-grid {
+            background-image: 
+                linear-gradient(to right, rgba(255, 42, 133, 0.2) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 240, 255, 0.2) 1px, transparent 1px);
+            background-size: 50px 50px;
+            transform: perspective(500px) rotateX(60deg);
+            transform-origin: center top;
+        }
+
+        /* Barra de rolagem customizada */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #090412;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #ff2a85, #00f0ff);
+            border-radius: 4px;
+        }
+
+        /* Animação de scanline sutil para o player */
+        .scanlines {
+            background: linear-gradient(
+                rgba(18, 16, 16, 0) 50%, 
+                rgba(0, 0, 0, 0.35) 50%
+            );
+            background-size: 100% 4px;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-vice-pink selection:text-white relative">
+
+    <!-- Luz ambiente que segue o mouse -->
+    <div id="cursor-glow" class="pointer-events-none fixed inset-0 z-30 transition-opacity duration-300"></div>
+
+    <!-- ========================================== -->
+    <!-- 1. NAVBAR FIXA GLASSMORPHISM               -->
+    <!-- ========================================== -->
+    <header id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-vice-dark/60 backdrop-blur-xl border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                
+                <!-- Logo VI Estilizado -->
+                <a href="#inicio" class="flex items-center gap-3 group">
+                    <div class="relative flex items-center justify-center w-11 h-11 rounded-xl bg-gradient-to-br from-vice-pink/20 to-vice-cyan/20 border border-vice-pink/50 group-hover:scale-105 transition-transform">
+                        <span class="font-display font-black italic text-2xl vi-logo-gradient tracking-tighter">VI</span>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="font-condensed font-bold text-lg tracking-widest text-white leading-none">GRAND THEFT AUTO</span>
+                        <span class="font-script text-xs text-vice-cyan tracking-wider">Leonida & Vice City</span>
+                    </div>
+                </a>
+
+                <!-- Links de Navegação Desktop -->
+                <nav class="hidden md:flex items-center space-x-8">
+                    <a href="#inicio" class="text-sm font-semibold uppercase tracking-wider text-gray-300 hover:text-vice-cyan transition-colors">Início</a>
+                    <a href="#historia" class="text-sm font-semibold uppercase tracking-wider text-gray-300 hover:text-vice-pink transition-colors">História</a>
+                    <a href="#personagens" class="text-sm font-semibold uppercase tracking-wider text-gray-300 hover:text-vice-cyan transition-colors">Personagens</a>
+                    <a href="#leonida" class="text-sm font-semibold uppercase tracking-wider text-gray-300 hover:text-vice-pink transition-colors">Vice City</a>
+                    <a href="#plataformas" class="text-sm font-semibold uppercase tracking-wider text-gray-300 hover:text-vice-gold transition-colors">Plataformas</a>
+                </nav>
+
+                <!-- Botão CTA Desktop & Menu Mobile Toggle -->
+                <div class="flex items-center gap-4">
+                    <a href="#plataformas" class="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-condensed font-bold uppercase tracking-wider text-sm bg-gradient-to-r from-vice-pink to-vice-orange text-white shadow-lg shadow-vice-pink/30 hover:shadow-vice-pink/60 hover:scale-105 transition-all">
+                        <span>Jogar Agora</span>
+                        <i class="fa-solid fa-bolt text-xs"></i>
+                    </a>
+
+                    <!-- Botão Hambúrguer Mobile -->
+                    <button id="mobile-menu-btn" aria-label="Abrir Menu" class="md:hidden p-2.5 rounded-xl bg-white/5 border border-white/10 text-gray-200 hover:text-vice-cyan focus:outline-none">
+                        <i class="fa-solid fa-bars text-xl" id="menu-icon"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menu Mobile Expansível -->
+        <div id="mobile-menu" class="hidden md:hidden bg-vice-dark/95 backdrop-blur-2xl border-b border-vice-pink/30 px-4 pt-2 pb-6 space-y-2">
+            <a href="#inicio" class="mobile-link block px-4 py-3 rounded-xl text-base font-semibold uppercase tracking-wider text-gray-200 hover:bg-white/5 hover:text-vice-cyan">Início</a>
+            <a href="#historia" class="mobile-link block px-4 py-3 rounded-xl text-base font-semibold uppercase tracking-wider text-gray-200 hover:bg-white/5 hover:text-vice-pink">História</a>
+            <a href="#personagens" class="mobile-link block px-4 py-3 rounded-xl text-base font-semibold uppercase tracking-wider text-gray-200 hover:bg-white/5 hover:text-vice-cyan">Personagens</a>
+            <a href="#leonida" class="mobile-link block px-4 py-3 rounded-xl text-base font-semibold uppercase tracking-wider text-gray-200 hover:bg-white/5 hover:text-vice-pink">Vice City</a>
+            <a href="#plataformas" class="mobile-link block px-4 py-3 rounded-xl text-base font-semibold uppercase tracking-wider text-gray-200 hover:bg-white/5 hover:text-vice-gold">Plataformas</a>
+        </div>
+    </header>
+
+    <!-- ========================================== -->
+    <!-- 2. HERO SECTION IMPACTANTE                 -->
+    <!-- ========================================== -->
+    <section id="inicio" class="relative min-h-screen flex items-center justify-center pt-24 pb-16 overflow-hidden">
+        
+        <!-- Camadas de Fundo e Arte Vetorial Tropical Neon -->
+        <div class="absolute inset-0 z-0">
+            <!-- Céu pôr do sol Vice City -->
+            <div class="absolute inset-0 bg-gradient-to-b from-[#120428] via-[#2b0945] to-[#090412]"></div>
+            
+            <!-- Sol Retrô Gigante no Horizonte -->
+            <div id="parallax-sun" class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/4 w-[320px] h-[320px] sm:w-[520px] sm:h-[520px] rounded-full bg-gradient-to-b from-vice-gold via-vice-orange to-vice-pink opacity-35 blur-sm pointer-events-none"></div>
+            
+            <!-- Grade Synthwave em perspectiva -->
+            <div class="absolute bottom-0 left-0 right-0 h-1/2 vice-grid opacity-30 pointer-events-none"></div>
+
+            <!-- Silhuetas de Palmeiras em SVG (Esquerda e Direita) -->
+            <svg class="absolute bottom-0 left-0 w-48 sm:w-80 h-auto text-[#06020d] opacity-90 pointer-events-none" viewBox="0 0 200 300" fill="currentColor">
+                <path d="M25,300 Q45,180 65,90 Q55,95 45,90 Q35,180 10,300 Z" />
+                <path d="M65,90 C30,60 5,80 0,110 C25,95 45,92 65,90 Z" />
+                <path d="M65,90 C40,40 10,45 5,70 C30,65 50,75 65,90 Z" />
+                <path d="M65,90 C75,35 110,40 125,65 C100,60 80,72 65,90 Z" />
+                <path d="M65,90 C95,60 130,75 140,105 C115,90 90,88 65,90 Z" />
+            </svg>
+
+            <svg class="absolute bottom-0 right-0 w-56 sm:w-96 h-auto text-[#06020d] opacity-90 pointer-events-none transform scale-x-[-1]" viewBox="0 0 200 300" fill="currentColor">
+                <path d="M25,300 Q45,180 65,90 Q55,95 45,90 Q35,180 10,300 Z" />
+                <path d="M65,90 C30,60 5,80 0,110 C25,95 45,92 65,90 Z" />
+                <path d="M65,90 C40,40 10,45 5,70 C30,65 50,75 65,90 Z" />
+                <path d="M65,90 C75,35 110,40 125,65 C100,60 80,72 65,90 Z" />
+                <path d="M65,90 C95,60 130,75 140,105 C115,90 90,88 65,90 Z" />
+            </svg>
+
+            <!-- Vinheta escura nas bordas -->
+            <div class="absolute inset-0 bg-gradient-to-t from-vice-dark via-transparent to-vice-dark/80"></div>
+        </div>
+
+        <!-- Conteúdo Central da Hero -->
+        <div class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            
+            <!-- Badge de Disponibilidade Oficial -->
+            <div class="inline-flex flex-wrap items-center justify-center gap-2 sm:gap-3 px-4 py-2 rounded-full bg-white/5 backdrop-blur-md border border-vice-cyan/40 shadow-lg shadow-vice-cyan/10 mb-8 animate-float">
+                <span class="flex h-2.5 w-2.5 relative">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-vice-cyan opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-vice-cyan"></span>
+                </span>
+                <span class="text-xs sm:text-sm font-semibold tracking-wider uppercase text-vice-cyan">
+                    PlayStation 5 e Xbox Series X|S
+                </span>
+                <span class="hidden sm:inline text-white/30">•</span>
+                <span class="text-xs sm:text-sm font-medium text-gray-200">
+                    Lançado em 19 de Novembro de 2026
+                </span>
+            </div>
+
+            <!-- Emblema VI + Título Principal -->
+            <div class="relative mb-6">
+                <div class="select-none pointer-events-none font-display font-black italic text-[110px] sm:text-[170px] md:text-[210px] leading-none vi-logo-gradient opacity-90 tracking-tighter">
+                    VI
+                </div>
+                <h1 class="-mt-10 sm:-mt-16 md:-mt-20 font-display font-black uppercase text-4xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight text-white drop-shadow-[0_5px_25px_rgba(0,0,0,0.9)]">
+                    GRAND THEFT AUTO <span class="vice-gradient-text">VI</span>
+                </h1>
+            </div>
+
+            <!-- Subtítulo -->
+            <p class="font-script text-2xl sm:text-4xl text-vice-cyan mb-4 animate-glow">
+                Bem-vindo a Leonida. Já disponível.
+            </p>
+            <p class="max-w-2xl mx-auto text-base sm:text-lg text-gray-300 mb-10 leading-relaxed">
+                Mergulhe na maior e mais imersiva evolução da série Grand Theft Auto. Explore as praias ensolaradas, pântanos traiçoeiros e becos iluminados a neon de Vice City.
+            </p>
+
+            <!-- Botões de Ação (CTAs) -->
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
+                <button id="open-trailer-btn" class="w-full sm:w-auto group relative inline-flex items-center justify-center gap-3 px-8 py-4 rounded-2xl font-condensed font-bold uppercase tracking-widest text-lg bg-gradient-to-r from-vice-pink via-purple-600 to-vice-cyan text-white shadow-[0_0_30px_rgba(255,42,133,0.5)] hover:shadow-[0_0_45px_rgba(0,240,255,0.7)] hover:scale-105 transition-all duration-300">
+                    <span class="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-play text-sm ml-0.5"></i>
+                    </span>
+                    <span>Assistir Trailer</span>
+                </button>
+
+                <a href="#leonida" class="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 rounded-2xl font-condensed font-bold uppercase tracking-widest text-lg bg-white/5 hover:bg-white/10 backdrop-blur-md text-white border border-white/20 hover:border-vice-cyan transition-all duration-300">
+                    <i class="fa-solid fa-compass text-vice-cyan"></i>
+                    <span>Explorar Leonida</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Indicador de Scroll -->
+        <a href="#historia" aria-label="Rolar para História" class="absolute bottom-6 left-1/2 -translate-x-1/2 text-gray-400 hover:text-vice-pink transition-colors animate-bounce">
+            <i class="fa-solid fa-chevron-down text-2xl"></i>
+        </a>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- 3. SEÇÃO DE HISTÓRIA / SINOPSE             -->
+    <!-- ========================================== -->
+    <section id="historia" class="relative py-24 sm:py-32 border-t border-white/10 overflow-hidden">
+        <!-- Luzes decorativas de fundo -->
+        <div class="absolute top-20 -left-32 w-96 h-96 bg-vice-pink/20 rounded-full blur-[120px] pointer-events-none"></div>
+        <div class="absolute bottom-10 -right-32 w-96 h-96 bg-vice-cyan/20 rounded-full blur-[120px] pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Coluna de Texto -->
+                <div class="lg:col-span-7 space-y-6">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-vice-pink/10 border border-vice-pink/30 text-vice-pink font-condensed uppercase tracking-widest text-xs font-bold">
+                        <i class="fa-solid fa-film"></i>
+                        <span>A Trama de Leonida</span>
+                    </div>
+
+                    <h2 class="font-display font-black uppercase text-3xl sm:text-5xl text-white leading-tight">
+                        Sol, Dinheiro Fácil e <span class="vice-gradient-text">Traição em Cada Esquina.</span>
+                    </h2>
+
+                    <p class="text-gray-300 text-lg leading-relaxed">
+                        Grand Theft Auto VI leva você ao estado de <strong class="text-white">Leonida</strong>, lar das ruas iluminadas a neon de <strong class="text-vice-cyan">Vice City</strong> e muito além. Em um lugar onde o glamour das mansões à beira-mar colide com o submundo implacável dos cartéis e das gangues locais, sobreviver exige mais do que sorte.
+                    </p>
+
+                    <p class="text-gray-400 text-base leading-relaxed">
+                        Após um golpe dar terrivelmente errado, <strong class="text-vice-pink">Lucia Caminos</strong> e <strong class="text-vice-cyan">Jason</strong> se veem no centro de uma conspiração criminosa que se estende por todo o estado. Forçados a confiar apenas um no outro para escapar vivos, a dupla precisará executar assaltos ousados, navegar por alianças instáveis e enfrentar autoridades corruptas sob o sol escaldante dos trópicos.
+                    </p>
+
+                    <!-- Destaques Rápidos -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4">
+                        <div class="p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm">
+                            <div class="text-vice-gold font-display font-black text-2xl">2X</div>
+                            <div class="text-xs uppercase tracking-wider text-gray-400 mt-1">Protagonistas Jogáveis</div>
+                        </div>
+                        <div class="p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm">
+                            <div class="text-vice-pink font-display font-black text-2xl">100%</div>
+                            <div class="text-xs uppercase tracking-wider text-gray-400 mt-1">Mundo Vivo e Reativo</div>
+                        </div>
+                        <div class="p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm">
+                            <div class="text-vice-cyan font-display font-black text-2xl">4K HDR</div>
+                            <div class="text-xs uppercase tracking-wider text-gray-400 mt-1">Ray Tracing Nativo</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Coluna Visual Estilizada (Cartão Postal Neon) -->
+                <div class="lg:col-span-5">
+                    <div class="relative rounded-3xl p-1 bg-gradient-to-br from-vice-pink via-purple-600 to-vice-cyan shadow-2xl">
+                        <div class="relative rounded-[22px] bg-[#0e061c] p-6 sm:p-8 overflow-hidden">
+                            <!-- Arte SVG de Skyline de Vice City -->
+                            <div class="relative h-64 sm:h-72 rounded-2xl bg-gradient-to-b from-[#2b0945] via-[#831843] to-[#f97316] overflow-hidden mb-6 flex items-end justify-center border border-white/10">
+                                <!-- Sol no cartão -->
+                                <div class="absolute top-6 w-32 h-32 rounded-full bg-gradient-to-b from-yellow-200 to-pink-500 opacity-80"></div>
+                                <!-- Prédios Art Déco em SVG -->
+                                <svg class="relative z-10 w-full h-44 text-[#090412]" viewBox="0 0 400 160" preserveAspectRatio="none" fill="currentColor">
+                                    <rect x="10" y="50" width="45" height="110" rx="2"/>
+                                    <rect x="65" y="25" width="55" height="135" rx="2"/>
+                                    <rect x="130" y="65" width="40" height="95" rx="2"/>
+                                    <rect x="180" y="15" width="65" height="145" rx="2"/>
+                                    <rect x="255" y="45" width="50" height="115" rx="2"/>
+                                    <rect x="315" y="30" width="75" height="130" rx="2"/>
+                                    <!-- Janelas Neon -->
+                                    <rect x="78" y="40" width="8" height="90" fill="#00f0ff" opacity="0.7"/>
+                                    <rect x="98" y="40" width="8" height="90" fill="#ff2a85" opacity="0.7"/>
+                                    <rect x="195" y="30" width="10" height="110" fill="#ffd000" opacity="0.7"/>
+                                    <rect x="220" y="30" width="10" height="110" fill="#00f0ff" opacity="0.7"/>
+                                    <rect x="335" y="45" width="35" height="6" fill="#ff2a85"/>
+                                </svg>
+                                <!-- Letreiro Neon sobreposto -->
+                                <div class="absolute top-4 right-4 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-vice-cyan/50 text-vice-cyan font-script text-sm">
+                                    Ocean Drive, VC
+                                </div>
+                            </div>
+
+                            <blockquote class="italic text-gray-200 text-base sm:text-lg border-l-4 border-vice-pink pl-4">
+                                "O único jeito de sair dessa cidade é juntos. Confiança é a moeda mais cara de Leonida."
+                            </blockquote>
+                            <div class="mt-4 flex items-center justify-between text-xs uppercase tracking-widest text-gray-400">
+                                <span>— Lucia Caminos</span>
+                                <span class="text-vice-cyan font-bold">Vice City, FL</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- 4. SEÇÃO DE PERSONAGENS (CARDS INTERATIVOS)-->
+    <!-- ========================================== -->
+    <section id="personagens" class="relative py-24 sm:py-32 bg-[#0c0518] border-t border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <!-- Cabeçalho da Seção -->
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="font-condensed font-bold uppercase tracking-widest text-sm text-vice-cyan">Dupla Fora-da-Lei</span>
+                <h2 class="font-display font-black uppercase text-3xl sm:text-5xl text-white mt-2">
+                    Conheça os <span class="vice-gradient-text">Protagonistas</span>
+                </h2>
+                <p class="text-gray-400 mt-4">
+                    Alterne instantaneamente entre Lucia e Jason ou coordene ações em equipe durante assaltos de alto risco. Clique nos cards para alternar os detalhes táticos.
+                </p>
+            </div>
+
+            <!-- Grid dos 2 Protagonistas -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12">
+                
+                <!-- CARD 1: LUCIA CAMINOS -->
+                <div class="character-card group relative rounded-3xl bg-gradient-to-b from-[#1e0b36] to-[#0d051a] p-6 sm:p-8 neon-border-pink transition-all duration-500 hover:-translate-y-2">
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
+                        <div class="flex items-center gap-4">
+                            <!-- Avatar SVG Estilizado Lucia -->
+                            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-vice-pink to-vice-orange p-0.5 shadow-lg shadow-vice-pink/30 shrink
